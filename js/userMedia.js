@@ -8,7 +8,7 @@ var mediaStream;
 
 function startUserMedia(stream) {
   var input = audio_context.createMediaStreamSource(stream);
-  mediaStream = stream
+  var mediaStream = stream
   __log('Media stream created.' );
 __log("input sample rate " +input.context.sampleRate);
 
@@ -22,7 +22,7 @@ __log("input sample rate " +input.context.sampleRate);
 function startRecording(button) {
   recorder && recorder.record();
   button.disabled = true;
-  button.nextElementSibling.disabled = false;
+  // button.nextElementSibling.disabled = false;
   __log('Recording...');
 }
 
@@ -77,3 +77,21 @@ window.onload = function init() {
     __log('No live audio input: ' + e);
   });
 };
+$(function() {
+  $('#start_button').click(function(){
+    startRecording(this);
+  });
+  $('#stop_button').click(function(){
+    stopRecording(this);
+  });
+});
+
+// document.getElementById("start_button").addEventListener("click", startRecording(this));
+// document.getElementById("stop_button").addEventListener("click", stopRecording(this));
+
+// $('.btn').click(function() {
+//       $(this).addClass("blue_button active").siblings().removeClass("blue_button");
+//     });
+
+
+
