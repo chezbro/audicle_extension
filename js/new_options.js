@@ -1,6 +1,7 @@
 var audio_context;
-var recorder;
+
 var BUFF_SIZE = 512;
+
 var microphone_data = {};
 
 try {
@@ -36,12 +37,10 @@ function start_microphone() {
     microphone_data.microphone_stream.connect(microphone_data.script_processor_node);
     microphone_data.microphone_stream.connect(audio_context.destination);
 
-    recorder = new Recorder(microphone_data.microphone_stream);
-
     console.log('OK microphone stream connected');
 }
 
-function record_microphone() {
+function record_microphone() {    //   call this from your UI ... say a button
 
     if (! navigator.getUserMedia) {
 
@@ -53,7 +52,7 @@ function record_microphone() {
         {audio: true},
 
         function(stream) {
-            recorder && recorder.record();
+
             microphone_data.media_stream = stream;
             start_microphone();
         },
@@ -62,41 +61,12 @@ function record_microphone() {
     );
 }
 
-function stop_microphone() {
+function stop_microphone() {  //  call this from ... say a button
 
     microphone_data.microphone_stream.disconnect();
     microphone_data.script_processor_node.disconnect();
-    recorder && recorder.stop();
     microphone_data.media_stream.stop();
     microphone_data.script_processor_node.onaudioprocess = null;
-    createDownloadLink();
-    recorder.clear();
+
     console.log('... microphone now stopped')    ;
 }
-
-function createDownloadLink() {
-  recorder && recorder.exportWAV(function(blob) {
-    /*var url = URL.createObjectURL(blob);
-    var li = document.createElement('li');
-    var au = document.createElement('audio');
-    var hf = document.createElement('a');
-
-    au.controls = true;
-    au.src = url;
-    hf.href = url;
-    hf.download = new Date().toISOString() + '.wav';
-    hf.innerHTML = hf.download;
-    li.appendChild(au);
-    li.appendChild(hf);
-    recordingslist.appendChild(li);*/
-  });
-}
-
-$(function() {
-  $('#start_button').click(function(){
-    record_microphone(this);
-  });
-  $('#stop_button').click(function(){
-    stop_microphone(this);
-  });
-});
