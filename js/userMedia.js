@@ -53,9 +53,9 @@ function record_microphone() {
         {audio: true},
 
         function(stream) {
-            recorder && recorder.record();
             microphone_data.media_stream = stream;
             start_microphone();
+            recorder && recorder.record();
         },
 
         on_error
