@@ -12,8 +12,11 @@
   "permissions": [
       "tabs"
     ],
-   "background": {
+  "background": {
      "scripts": ["js/background.js"],
      "persistent": false
-   }
+  },
+  "externally_connectable": {
+    "matches": ["*://peaceful-fjord-8585.herokuapp.com/*"]
+}
 }

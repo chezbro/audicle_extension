@@ -2,6 +2,7 @@
 
   var WORKER_PATH = 'js/recorderWorker.js';
   var encoderWorker = new Worker('js/mp3Worker.js');
+  var blob = null;
 
   var Recorder = function(source, cfg){
     var config = cfg || {};
@@ -95,31 +96,31 @@
         encoderWorker.onmessage = function(e) {
             if (e.data.cmd == 'data') {
 
-				console.log("Done converting to Mp3");
-				log.innerHTML += "\n" + "Done converting to Mp3";
+      				console.log("Done converting to Mp3");
+      				log.innerHTML += "\n" + "Done converting to Mp3";
 
-				/*var audio = new Audio();
-				audio.src = 'data:audio/mp3;base64,'+encode64(e.data.buf);
-				audio.play();*/
+      				/*var audio = new Audio();
+      				audio.src = 'data:audio/mp3;base64,'+encode64(e.data.buf);
+      				audio.play();*/
 
-				//console.log ("The Mp3 data " + e.data.buf);
+      				//console.log ("The Mp3 data " + e.data.buf);
 
-				var mp3Blob = new Blob([new Uint8Array(e.data.buf)], {type: 'audio/mp3'});
-				uploadAudio(mp3Blob);
+      				var mp3Blob = new Blob([new Uint8Array(e.data.buf)], {type: 'audio/mp3'});
+      				uploadAudio(mp3Blob);
 
-				var url = 'data:audio/mp3;base64,'+encode64(e.data.buf);
-				var li = document.createElement('li');
-				var au = document.createElement('audio');
-				var hf = document.createElement('a');
-
-				au.controls = true;
-				au.src = url;
-				hf.href = url;
-				hf.download = 'audio_recording_' + new Date().getTime() + '.mp3';
-				hf.innerHTML = hf.download;
-				li.appendChild(au);
-				li.appendChild(hf);
-				recordingslist.appendChild(li);
+      				var url = 'data:audio/mp3;base64,'+encode64(e.data.buf);
+      				var li = document.createElement('li');
+      				var au = document.createElement('audio');
+              au.className = "audio_file"
+      				var hf = document.createElement('a');
+      				au.controls = true;
+      				au.src = url;
+      				hf.href = url;
+      				hf.download = 'audio_recording_' + new Date().getTime() + '.mp3';
+      				hf.innerHTML = hf.download;
+      				li.appendChild(au);
+      				li.appendChild(hf);
+      				recordingslist.appendChild(li);
 
             }
         };

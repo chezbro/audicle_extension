@@ -53,9 +53,9 @@ function record_microphone() {
         {audio: true},
 
         function(stream) {
-            recorder && recorder.record();
             microphone_data.media_stream = stream;
             start_microphone();
+            recorder && recorder.record();
         },
 
         on_error
@@ -92,11 +92,42 @@ function createDownloadLink() {
   });
 }
 
+function post_to_audicle() {
+  var audio_data = $('.audio_file').attr('src')
+  alert(audio_data)
+  var fd = new FormData();
+  fd.append('fname', "Trial Audio Data");
+  fd.append('data', audio_data);
+  $.ajax({
+    type: 'POST',
+    url: "http://localhost:3000/clips",
+    // url: 'https://peaceful-fjord-8585.herokuapp.com/clips',
+    data: fd,
+    datatype:'json',
+    crossDomain: true,
+    processData: false,
+    contentType: false,
+    success: function(ts) {
+      alert("Audio Recording Saved");
+    },
+    error: function(ts){
+      alert("Error post " + ts.responseText);
+    }
+  }).done(function(data) {
+    //console.log(data);
+    alert("It Worked")
+    log.innerHTML += "\n" + data;
+  });
+}
+
 $(function() {
   $('#start_button').click(function(){
     record_microphone(this);
   });
   $('#stop_button').click(function(){
     stop_microphone(this);
+  });
+  $('#post_clip').click(function(){
+    post_to_audicle();
   });
 });
