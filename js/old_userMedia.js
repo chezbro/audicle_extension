@@ -1,7 +1,6 @@
 function __log(e, data) {
   log.innerHTML += "\n" + e + " " + (data || '');
 }
-
 var audio_context;
 var recorder;
 var mediaStream;
@@ -41,6 +40,16 @@ function stopRecording(button) {
 
 function createDownloadLink() {
   recorder && recorder.exportWAV(function(blob) {
+    var xhr=new XMLHttpRequest();
+    xhr.onload=function(e) {
+        if(this.readyState === 4) {
+            console.log("Server returned: ",e.target.responseText));
+        }
+    };
+    var fd=new FormData();
+    fd.append("that_random_filename.mp3",blob);
+    xhr.open("POST","<url>",true);
+    xhr.send(fd);
     /*var url = URL.createObjectURL(blob);
     var li = document.createElement('li');
     var au = document.createElement('audio');

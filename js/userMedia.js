@@ -22,7 +22,16 @@ function process_microphone_buffer(event) {
 
 
 function on_error(e) {
-    console.log(e);
+    var start_button = $('#start_button')
+    var stop_button = $('#stop_button')
+    start_button.hide();
+    stop_button.hide();
+    if ($("#record_header").length > 0){
+        document.getElementById("record_header").innerHTML = '<button class="btn btn-white flip"><a href="mic.html" target="_blank">Turn On Audio Permissions</a></button>'
+    }
+    if ($("#get_permissions").length > 0){
+        document.getElementById("permissions_screenshot").setAttribute("src","https://s3-us-west-2.amazonaws.com/new-audicle/no_audio_permissions.png")
+    }
 }
 
 function start_microphone() {
@@ -41,7 +50,7 @@ function start_microphone() {
     console.log('OK microphone stream connected');
 }
 
-function record_microphone() {
+function get_audio_permission() {
 
     if (! navigator.getUserMedia) {
 
@@ -54,10 +63,27 @@ function record_microphone() {
 
         function(stream) {
             microphone_data.media_stream = stream;
+        },
+
+        on_error
+    );
+}
+
+function record_microphone() {
+
+    if (! navigator.getUserMedia) {
+
+        navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+    }
+
+    navigator.getUserMedia(
+
+        {audio: true},
+        function(stream) {
+            microphone_data.media_stream = stream;
             start_microphone();
             recorder && recorder.record();
         },
-
         on_error
     );
 }
@@ -98,5 +124,8 @@ $(function() {
   });
   $('#stop_button').click(function(){
     stop_microphone(this);
+  });
+  $('#get_permissions').click(function(){
+    get_audio_permission(this);
   });
 });

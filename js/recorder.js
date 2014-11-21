@@ -78,7 +78,6 @@
 		arrayBuffer = this.result;
 		var buffer = new Uint8Array(arrayBuffer),
         data = parseWav(buffer);
-
         console.log(data);
 		console.log("Converting to Mp3");
 		log.innerHTML += "\n" + "Converting to Mp3";
@@ -120,7 +119,6 @@
 				li.appendChild(au);
 				li.appendChild(hf);
 				recordingslist.appendChild(li);
-
             }
         };
 	  };
@@ -195,7 +193,6 @@
 		};
 		reader.readAsDataURL(mp3Data);
 	}
-
     source.connect(this.node);
     this.node.connect(this.context.destination);    //this should not be necessary
   };

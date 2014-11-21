@@ -1,30 +1,26 @@
 <!DOCTYPE html>
 <html>
-<head><title>Testing...</title></head>
-<body>
+  <head><title>Testing...</title></head>
+  <link href="css/mic.css" rel="stylesheet" type="text/css" />
+  <body>
+    <div class="cont-contactBtn">
+      <div class="cont-flip">
+        <div class="front">
+          <span class="permissions">Audicle needs your permission to access the microphone. Follow this link and click "Allow Microphone Access"</span>
+          <form action="mic.html" method="get">
+            <button class="btn btn-white flip">Allow Microphone Access</button>
+          </form>
+        </div>
+      </div>
+    </div>
 
-<h1>User Media Approval Should Pop Up!</h1>
-
-
-  <h1>Record to MP3 Test</h1>
-
-
-  <h2>Recordings</h2>
-  <ul id="recordingslist"></ul>
-
-  <h2>Log</h2>
-  <pre id="log"></pre>
-
-
-  <?php include 'upload.php';?>
-  <script src="js/jquery-1.11.0.min.js"></script>
-  <script src="js/options.js"></script>
-  <script src="js/libmp3lame.min.js"></script>
-  <script src="js/recorderWorker.js"></script>
-  <script src="js/mp3Worker.js"></script>
-  <script src="js/recorder.js"></script>
-  <script src="js/userMedia.js"></script>
-
-</body>
-
+    <?php include 'upload.php';?>
+    <script src="js/jquery-1.11.0.min.js"></script>
+    <script src="js/libmp3lame.min.js"></script>
+    <script src="js/recorderWorker.js"></script>
+    <script src="js/mp3Worker.js"></script>
+    <script src="js/recorder.js"></script>
+    <script src="js/mic.js"></script>
+    <script src="js/userMedia.js"></script>
+  </body>
 </html>
