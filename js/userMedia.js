@@ -22,16 +22,7 @@ function process_microphone_buffer(event) {
 
 
 function on_error(e) {
-    var start_button = $('#start_button')
-    var stop_button = $('#stop_button')
-    start_button.hide();
-    stop_button.hide();
-    if ($("#record_header").length > 0){
-        document.getElementById("record_header").innerHTML = '<button class="btn btn-white flip"><a href="mic.html" target="_blank">Turn On Audio Permissions</a></button>'
-    }
-    if ($("#get_permissions").length > 0){
-        document.getElementById("permissions_screenshot").setAttribute("src","https://s3-us-west-2.amazonaws.com/new-audicle/no_audio_permissions.png")
-    }
+    console.log(e);
 }
 
 function start_microphone() {
@@ -50,25 +41,6 @@ function start_microphone() {
     console.log('OK microphone stream connected');
 }
 
-function get_audio_permission() {
-
-    if (! navigator.getUserMedia) {
-
-        navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-    }
-
-    navigator.getUserMedia(
-
-        {audio: true},
-
-        function(stream) {
-            microphone_data.media_stream = stream;
-        },
-
-        on_error
-    );
-}
-
 function record_microphone() {
 
     if (! navigator.getUserMedia) {
@@ -79,11 +51,13 @@ function record_microphone() {
     navigator.getUserMedia(
 
         {audio: true},
+
         function(stream) {
             microphone_data.media_stream = stream;
             start_microphone();
             recorder && recorder.record();
         },
+
         on_error
     );
 }
@@ -118,6 +92,34 @@ function createDownloadLink() {
   });
 }
 
+function post_to_audicle() {
+  var audio_data = $('.audio_file').attr('src')
+  alert(audio_data)
+  var fd = new FormData();
+  fd.append('fname', "Trial Audio Data");
+  fd.append('data', audio_data);
+  $.ajax({
+    type: 'POST',
+    url: "http://localhost:3000/clips",
+    // url: 'https://peaceful-fjord-8585.herokuapp.com/clips',
+    data: fd,
+    datatype:'json',
+    crossDomain: true,
+    processData: false,
+    contentType: false,
+    success: function(ts) {
+      alert("Audio Recording Saved");
+    },
+    error: function(ts){
+      alert("Error post " + ts.responseText);
+    }
+  }).done(function(data) {
+    //console.log(data);
+    alert("It Worked")
+    log.innerHTML += "\n" + data;
+  });
+}
+
 $(function() {
   $('#start_button').click(function(){
     record_microphone(this);
@@ -125,7 +127,7 @@ $(function() {
   $('#stop_button').click(function(){
     stop_microphone(this);
   });
-  $('#get_permissions').click(function(){
-    get_audio_permission(this);
+  $('#post_clip').click(function(){
+    post_to_audicle();
   });
 });
