@@ -94,9 +94,16 @@ function createDownloadLink() {
 
 function post_to_audicle() {
   var audio_data = $('.audio_file').attr('src')
+  var page_title = document.title
+  var web_address;
+  chrome.tabs.query({'active': true, 'lastFocusedWindow': true},
+   function(tabs) {
+      web_address = tabs[0].url;
+    });
   alert(audio_data)
   var fd = new FormData();
-  fd.append('fname', "Trial Audio Data");
+  fd.append('fname', page_title);
+  fd.append('faddress', web_address);
   fd.append('data', audio_data);
   $.ajax({
     type: 'POST',
@@ -131,3 +138,6 @@ $(function() {
     post_to_audicle();
   });
 });
+// If recorded, then ("#play_button").click(function(play_audicle(this)...
+
+
