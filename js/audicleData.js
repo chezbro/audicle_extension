@@ -10,7 +10,6 @@ $(function() {
   $.ajax({
     type: "GET",
     url: "http://localhost:3000/audicle_data",
-    async: false,
     dataType: "json",
     data: {web_address: $(this).find("#test_url").text()}
   })
