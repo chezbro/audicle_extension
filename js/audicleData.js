@@ -1,20 +1,22 @@
-$(function() {
-  $('#test_url').click(function(){
+$(function(){
   var current_url;
-  var url_address;
+
   chrome.tabs.query({currentWindow: true, active: true}, function(tabs){
     current_url = (tabs[0].url);
-    $("#test_url").text(current_url)
-   });
-});
-  $.ajax({
-    type: "GET",
-    url: "http://localhost:3000/audicle_data",
-    dataType: "json",
-    data: {web_address: $(this).find("#test_url").text()}
-  })
-    .done(function(data){
-      alert(data)
-    });
+    alert(current_url);
+    var fd = new FormData();
 
-  })
+    JSON.stringify(current_url);
+    fd.append('faddress', current_url);
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:3000/audicle_data",
+      data: fd,
+      crossDomain: true,
+      processData: false,
+      contentType: false,
+    }).done(function(data){
+        alert(data)
+    });
+  });
+});
